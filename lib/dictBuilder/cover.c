@@ -72,7 +72,7 @@ static int g_displayLevel = 0;
 #define DISPLAYLEVEL(l, ...) LOCALDISPLAYLEVEL(g_displayLevel, l, __VA_ARGS__)
 
 #ifndef LOCALDISPLAYUPDATE
-static const clock_t g_refreshRate = CLOCKS_PER_SEC * 15 / 100;
+static const clock_t g_refreshRate = 1000000 * 15 / 100;
 static clock_t g_time = 0;
 #endif
 #undef  LOCALDISPLAYUPDATE
