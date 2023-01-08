@@ -76,7 +76,7 @@ int ZSTD_pthread_join(ZSTD_pthread_t thread, void **value_ptr)
 
 #endif   /* ZSTD_MULTITHREAD */
 
-#if defined(ZSTD_MULTITHREAD) && DEBUGLEVEL >= 1 && !defined(_WIN32)
+#if defined(ZSTD_MULTITHREAD) && DEBUGLEVEL >= 1 && !defined(_WIN32) && !defined(__VALI__)
 
 #define ZSTD_DEPS_NEED_MALLOC
 #include "zstd_deps.h"
