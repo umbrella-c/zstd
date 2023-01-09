@@ -73,6 +73,26 @@ int ZSTD_pthread_create(ZSTD_pthread_t* thread, const void* unused,
 
 int ZSTD_pthread_join(ZSTD_pthread_t thread, void** value_ptr);
 
+#elif defined(ZSTD_MULTITHREAD) && defined(__VALI__)
+#include <threads.h>
+
+#define ZSTD_pthread_mutex_t            mtx_t
+#define ZSTD_pthread_mutex_init(a, b)   mtx_init((a), mtx_plain)
+#define ZSTD_pthread_mutex_destroy(a)   mtx_destroy((a))
+#define ZSTD_pthread_mutex_lock(a)      mtx_lock((a))
+#define ZSTD_pthread_mutex_unlock(a)    mtx_unlock((a))
+
+#define ZSTD_pthread_cond_t             cnd_t
+#define ZSTD_pthread_cond_init(a, b)    cnd_init((a))
+#define ZSTD_pthread_cond_destroy(a)    cnd_destroy((a))
+#define ZSTD_pthread_cond_wait(a, b)    cnd_wait((a), (b))
+#define ZSTD_pthread_cond_signal(a)     cnd_signal((a))
+#define ZSTD_pthread_cond_broadcast(a)  cnd_broadcast((a))
+
+#define ZSTD_pthread_t                  thrd_t
+#define ZSTD_pthread_create(a, b, c, d) thrd_create((a), (thrd_start_t)(c), (d))
+#define ZSTD_pthread_join(a, b)         thrd_join((a),(b))
+
 /**
  * add here more wrappers as required
  */
