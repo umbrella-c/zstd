@@ -270,16 +270,28 @@ install(FILES ${PublicHeaders} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
 foreach(target_suffix IN ITEMS "_shared" "_static" "")
     if(TARGET "libzstd${target_suffix}")
-        install(TARGETS "libzstd${target_suffix}"
-            EXPORT "zstdExports${target_suffix}"
-            INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-            RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-            BUNDLE DESTINATION "${CMAKE_INSTALL_BINDIR}"
-            FRAMEWORK DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT runtime OPTIONAL
-            PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        if (VALI_BUILD)
+            install(TARGETS "libzstd${target_suffix}"
+                INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+                ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                BUNDLE DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                FRAMEWORK DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT runtime OPTIONAL
+                PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
             )
+        else()
+            install(TARGETS "libzstd${target_suffix}"
+                EXPORT "zstdExports${target_suffix}"
+                INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+                ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                BUNDLE DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                FRAMEWORK DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT runtime OPTIONAL
+                PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+            )
+        endif()
     endif()
 endforeach()
 

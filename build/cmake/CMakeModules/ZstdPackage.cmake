@@ -14,21 +14,24 @@ write_basic_package_version_file(
 # Configure package for installation
 set(ConfigPackageLocation ${CMAKE_INSTALL_LIBDIR}/cmake/zstd)
 
-foreach(target_suffix IN ITEMS "_shared" "_static" "")
-    if(TARGET "libzstd${target_suffix}")
-        # Export targets for build directory
-        export(EXPORT "zstdExports${target_suffix}"
-                FILE "${CMAKE_CURRENT_BINARY_DIR}/zstdTargets${target_suffix}.cmake"
-                NAMESPACE zstd::
-        )
-        # Install exported targets
-        install(EXPORT "zstdExports${target_suffix}"
-                FILE "zstdTargets${target_suffix}.cmake"
-                NAMESPACE zstd::
-                DESTINATION ${ConfigPackageLocation}
-        )
-    endif()
-endforeach()
+# Exports are disabled in kernel builds
+if (NOT VALI_BUILD)
+    foreach(target_suffix IN ITEMS "_shared" "_static" "")
+        if(TARGET "libzstd${target_suffix}")
+            # Export targets for build directory
+            export(EXPORT "zstdExports${target_suffix}"
+                    FILE "${CMAKE_CURRENT_BINARY_DIR}/zstdTargets${target_suffix}.cmake"
+                    NAMESPACE zstd::
+            )
+            # Install exported targets
+            install(EXPORT "zstdExports${target_suffix}"
+                    FILE "zstdTargets${target_suffix}.cmake"
+                    NAMESPACE zstd::
+                    DESTINATION ${ConfigPackageLocation}
+            )
+        endif()
+    endforeach()
+endif()
 
 # Configure and install package config file
 configure_package_config_file(
